@@ -1,4 +1,5 @@
 from Easy_Ratios_Port import show_ratios_dashboard
+show_ratios_dashboard()
 import streamlit as st
 
 # --------------------------------
