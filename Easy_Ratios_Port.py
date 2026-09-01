@@ -1,7 +1,7 @@
- import streamlit as st
- def show_ratios_dashboard():
+   import streamlit as st
+   def show_ratios_dashboard():
 
-st.title("📊 Painel de Análise de Rácios")
+   st.title("📊 Painel de Análise de Rácios")
 
 # Dicionário com os rácios
 ratios = {
