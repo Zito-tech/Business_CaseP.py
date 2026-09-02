@@ -2,11 +2,11 @@ import streamlit as st
 
 from Easy_Ratios_Port import show_ratios_dashboard
 
---------------------------------
+# --------------------------------
 Dados Financeiros Base
---------------------------------
+# --------------------------------
 
-BASE_DATA = {
+# BASE_DATA = {
 
 "sales": 50_000_000,
 
