@@ -99,3 +99,7 @@ with col2:
     st.success(
         ratios[selected_ratio]["description"]
     )
+
+if name == "main":
+
+show_ratios_dashboard()
