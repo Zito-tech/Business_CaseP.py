@@ -375,16 +375,14 @@ def run_quarter(quarter_num):
 
 
 # --------------------------------
-# Executar os Quatro Trimestres
+# Executar Um Único Período
 # --------------------------------
 
 st.title(
     "🏢 Simulador Financeiro Empresarial"
 )
 
-for q in range(1, 5):
-
-    run_quarter(q)
+run_quarter(1)
 
 
 # --------------------------------
