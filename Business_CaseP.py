@@ -1,4 +1,4 @@
-from Easy_Ratios_Port import show_ratios_dashboard
+from Easy_Ratios import show_ratios_dashboard
 import streamlit as st
 
 # --------------------------------
@@ -230,3 +230,4 @@ def run_quarter(quarter_num):
 # --------------------------------
 for q in range(1, 5):
     run_quarter(q)
+
