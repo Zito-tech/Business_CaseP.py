@@ -1,9 +1,11 @@
-from Easy_Ratios_Port import show_ratios_dashboard
 import streamlit as st
+from Easy_Ratios import show_ratios_dashboard
+
 
 # --------------------------------
 # Dados Financeiros Base
 # --------------------------------
+
 BASE_DATA = {
     "sales": 50_000_000,
     "cost_of_sales": 20_000_000,
@@ -22,12 +24,16 @@ BASE_DATA = {
     "share_capital": 2_249_250,
 }
 
+
 # --------------------------------
 # Função do Trimestre
 # --------------------------------
+
 def run_quarter(quarter_num):
 
-    st.title(f"📊 Simulador de Cenários Empresariais - Trimestre {quarter_num}")
+    st.title(
+        f"📊 Simulador de Cenários Empresariais - Trimestre {quarter_num}"
+    )
 
     # Copiar dados base
     data = BASE_DATA.copy()
@@ -37,10 +43,14 @@ def run_quarter(quarter_num):
     cash_from_investments = 0
     cash_from_financing = 0
 
-    # -----------------------------
+
+    # --------------------------------
     # Controlo na Barra Lateral
-    # -----------------------------
-    st.sidebar.header(f"Decisões do Trimestre {quarter_num}")
+    # --------------------------------
+
+    st.sidebar.header(
+        f"Decisões do Trimestre {quarter_num}"
+    )
 
     scenario1 = st.sidebar.checkbox(
         "Mudar para uma renda mais barata",
@@ -77,58 +87,86 @@ def run_quarter(quarter_num):
         key=f"q{quarter_num}_s7"
     )
 
-    # -----------------------------
+
+    # --------------------------------
     # Aplicar Cenários
-    # -----------------------------
+    # --------------------------------
+
     if scenario1:
+
         data["rent"] -= 80_000
         data["bank"] += 80_000
         data["creditors"] += 22_000
+
         cash_from_operations += 80_000
 
+
     if scenario2:
+
         data["marketing"] += 50_000
         data["sales"] += 500_000
         data["bank"] += 450_000
         data["creditors"] += 121_500
+
         cash_from_operations += 450_000
 
+
     if scenario3:
+
         data["salaries"] += 500_000
         data["sales"] += 2_000_000
         data["bank"] += 1_500_000
         data["creditors"] += 405_000
+
         cash_from_operations += 1_500_000
 
+
     if scenario4:
+
         data["cost_of_sales"] -= 500_000
         data["bank"] += 500_000
         data["creditors"] += 135_000
+
         cash_from_operations += 500_000
 
+
     if scenario5:
+
         data["fixed_assets"] += 500_000
         data["bank_overdraft"] += 500_000
+
         cash_from_investments -= 500_000
 
+
     if scenario6:
+
         data["admin_costs"] += 500_000
         data["sales"] += 1_000_000
         data["bank"] += 500_000
         data["creditors"] += 135_000
+
         cash_from_operations += 500_000
 
+
     if scenario7:
+
         data["admin_costs"] += 750_000
         data["cost_of_sales"] -= 1_000_000
         data["bank"] += 250_000
         data["creditors"] += 67_500
+
         cash_from_operations += 250_000
 
-    # -----------------------------
+
+    # --------------------------------
     # Cálculos
-    # -----------------------------
-    gross_profit = data["sales"] - data["cost_of_sales"]
+    # --------------------------------
+
+    gross_profit = (
+        data["sales"]
+        - data["cost_of_sales"]
+    )
+
 
     expenses = (
         data["salaries"]
@@ -137,9 +175,13 @@ def run_quarter(quarter_num):
         + data["admin_costs"]
     )
 
+
     ebt = gross_profit - expenses
+
     tax = ebt * data["tax_rate"]
+
     net_profit = ebt - tax
+
 
     current_assets = (
         data["inventory"]
@@ -147,87 +189,4 @@ def run_quarter(quarter_num):
         + data["bank"]
     )
 
-    total_assets = data["fixed_assets"] + current_assets
-
-    total_liabilities = (
-        data["long_term_liabilities"]
-        + data["creditors"]
-        + data["bank_overdraft"]
-    )
-
-    equity = data["share_capital"] + net_profit
-
-    total_equity_liabilities = (
-        total_liabilities + equity
-    )
-
-    closing_balance = (
-        opening_balance
-        + cash_from_operations
-        + cash_from_investments
-        + cash_from_financing
-    )
-
-    # -----------------------------
-    # Rácios
-    # -----------------------------
-    gross_profit_ratio = gross_profit / data["sales"]
-    net_profit_ratio = net_profit / data["sales"]
-    roi = net_profit / total_equity_liabilities
-
-    current_ratio = (
-        current_assets / data["creditors"]
-        if data["creditors"] != 0
-        else 0
-    )
-
-    debtors_days = (
-        data["debtors"] / data["sales"]
-    ) * 365
-
-    debt_to_equity = (
-        total_liabilities / equity
-    )
-
-    # -----------------------------
-    # Apresentação
-    # -----------------------------
-    st.header("📄 Demonstração de Resultados")
-
-    st.write(f"Vendas: {data['sales']:,.0f}")
-    st.write(f"Custo das Vendas: {data['cost_of_sales']:,.0f}")
-    st.write(f"Margem Bruta: {gross_profit:,.0f}")
-    st.write(f"Resultado Líquido: {net_profit:,.0f}")
-
-    st.header("🏦 Balanço")
-
-    st.write(f"Total de Ativos: {total_assets:,.0f}")
-    st.write(f"Total de Passivos: {total_liabilities:,.0f}")
-    st.write(f"Capital Próprio: {equity:,.0f}")
-
-    st.header("💰 Fluxo de Caixa")
-
-    st.write(f"Saldo Final: {closing_balance:,.0f}")
-
-    st.header("📊 Rácios Financeiros")
-
-    st.write(f"Rácio de Margem Bruta: {gross_profit_ratio:.2%}")
-    st.write(f"Rácio de Resultado Líquido: {net_profit_ratio:.2%}")
-    st.write(f"ROI: {roi:.2%}")
-    st.write(f"Rácio de Liquidez Corrente: {current_ratio:.2f}")
-    st.write(f"Prazo Médio de Recebimentos: {debtors_days:.2f} dias")
-    st.write(f"Rácio Dívida/Capital Próprio: {debt_to_equity:.2f}")
-
-    st.success("✅ Experimente diferentes combinações!")
-
-    st.markdown("---")
-
-    show_ratios_dashboard()
-
-
-# --------------------------------
-# Executar Todos os Trimestres
-# --------------------------------
-for q in range(1, 5):
-    run_quarter(q)
 
